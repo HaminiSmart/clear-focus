@@ -1,11 +1,12 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Simplify Your To-Do List</title>
 <!-- Google Fonts for a modern look -->
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&amp;display=swap" rel="stylesheet"/>
 <style>
   body {
     font-family: 'Roboto', sans-serif;
@@ -217,46 +218,39 @@
 </style>
 </head>
 <body>
-
 <h1>ClearFocus — Simplify Your To-Do List</h1>
 <p>Your personal productivity assistant to organize and achieve more effortlessly.</p>
-
 <div id="controls">
-  <button id="toggle-theme">Toggle Dark Mode</button>
+<button id="toggle-theme">Toggle Dark Mode</button>
 </div>
-
 <!-- Search box -->
-<input type="text" id="searchInput" placeholder="Search tasks..." onkeyup="renderTasks()" />
-
+<input id="searchInput" onkeyup="renderTasks()" placeholder="Search tasks..." type="text"/>
 <!-- Task input form -->
 <div id="taskForm">
-  <div>
-    <input type="text" id="taskInput" placeholder="New task" />
-    <select id="priority">
-      <option value="Low">Low Priority</option>
-      <option value="Medium">Medium Priority</option>
-      <option value="High">High Priority</option>
-    </select>
-    <input type="date" id="dueDate" />
-    <button onclick="addTask()">Add Task</button>
-  </div>
+<div>
+<input id="taskInput" placeholder="New task" type="text"/><button id="micButton" style="margin-left: 5px;"><img alt="Mic" src="https://img.icons8.com/ios-filled/24/000000/microphone.png"/></button>
+<select id="priority">
+<option value="Low">Low Priority</option>
+<option value="Medium">Medium Priority</option>
+<option value="High">High Priority</option>
+</select>
+<input id="dueDate" type="date"/>
+<button onclick="addTask()">Add Task</button>
 </div>
-
+</div>
 <!-- Filter buttons -->
 <div class="filter-buttons">
-  <button onclick="filterTasks('all')">All</button>
-  <button onclick="filterTasks('pending')">Pending</button>
-  <button onclick="filterTasks('completed')">Completed</button>
-  <button onclick="sortTasks('priority')">Sort by Priority</button>
-  <button onclick="sortTasks('dueDate')">Sort by Due Date</button>
-  <button onclick="clearCompleted()">Clear Completed</button>
+<button onclick="filterTasks('all')">All</button>
+<button onclick="filterTasks('pending')">Pending</button>
+<button onclick="filterTasks('completed')">Completed</button>
+<button onclick="sortTasks('priority')">Sort by Priority</button>
+<button onclick="sortTasks('dueDate')">Sort by Due Date</button>
+<button onclick="clearCompleted()">Clear Completed</button>
 </div>
-
 <!-- Task list -->
 <div id="taskContainer">
-  <ul id="taskList"></ul>
+<ul id="taskList"></ul>
 </div>
-
 <script>
   let tasks = JSON.parse(localStorage.getItem('tasks')) || [];
   let currentFilter = 'all';
@@ -412,5 +406,23 @@
   // Call render initially
   renderTasks();
 </script>
-</body>
+<script>
+document.getElementById("micButton").addEventListener("click", function() {
+    var recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.lang = "en-US";
+    recognition.onresult = function(event) {
+        document.getElementById("taskInput").value = event.results[0][0].transcript;
+    };
+    recognition.start();
+});
+
+function editTask(button) {
+    var li = button.parentElement;
+    var currentText = li.firstChild.textContent.trim();
+    var newText = prompt("Edit task:", currentText);
+    if (newText !== null && newText.trim() !== "") {
+        li.firstChild.textContent = newText + " ";
+    }
+}
+</script></body>
 </html>
